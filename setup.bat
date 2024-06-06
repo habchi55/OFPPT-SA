@@ -27,7 +27,21 @@ pip install -r requirements.txt
 echo Initializing the database...
 python -c "from your_script import create_database; create_database()"
 
-:: Step 6: Run the application
+:: Step 6: Create a shortcut to run the application
+echo Creating shortcut...
+
+:: Customize the name of the shortcut here
+set SHORTCUT_NAME=OFPPT Suivi d'Actions
+
+:: Define paths
+set SHORTCUT_PATH=%USERPROFILE%\Desktop\%SHORTCUT_NAME%.lnk
+set TARGET_PATH=%CD%\venv\Scripts\python.exe
+set MAIN_SCRIPT_PATH=%CD%\main.py
+
+:: Create the shortcut using PowerShell
+powershell -command "$s=(New-Object -COM WScript.Shell).CreateShortcut('%SHORTCUT_PATH%'); $s.TargetPath='%TARGET_PATH%'; $s.Arguments='%MAIN_SCRIPT_PATH%'; $s.Save()"
+
+:: Step 7: Run the application
 echo Running the application...
 python main.py
 
