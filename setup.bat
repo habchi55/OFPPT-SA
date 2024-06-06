@@ -1,6 +1,6 @@
 @echo off
 
-:: Step 1: Download and install Python
+:: Step 1: Download and install Python (skip if Python is already installed)
 echo Downloading Python installer...
 curl -o python-installer.exe https://www.python.org/ftp/python/3.10.2/python-3.10.2-amd64.exe
 
@@ -21,13 +21,18 @@ call venv\Scripts\activate
 
 :: Step 4: Install required libraries
 echo Installing required Python libraries...
+pip install pyinstaller
 pip install -r requirements.txt
 
 :: Step 5: Initialize the database
 echo Initializing the database...
 python -c "from your_script import create_database; create_database()"
 
-:: Step 6: Create a shortcut to run the application
+:: Step 6: Build the executable using PyInstaller
+echo Building the executable...
+pyinstaller --onefile --name "OFPPT Suivi d'Actions" main.py
+
+:: Step 7: Create a shortcut to run the executable
 echo Creating shortcut...
 
 :: Customize the name of the shortcut here
@@ -35,15 +40,14 @@ set SHORTCUT_NAME=OFPPT Suivi d'Actions
 
 :: Define paths
 set SHORTCUT_PATH=%USERPROFILE%\Desktop\%SHORTCUT_NAME%.lnk
-set TARGET_PATH=%CD%\venv\Scripts\python.exe
-set MAIN_SCRIPT_PATH=%CD%\main.py
+set TARGET_PATH=%CD%\dist\%SHORTCUT_NAME%.exe
 
 :: Create the shortcut using PowerShell
-powershell -command "$s=(New-Object -COM WScript.Shell).CreateShortcut('%SHORTCUT_PATH%'); $s.TargetPath='%TARGET_PATH%'; $s.Arguments='%MAIN_SCRIPT_PATH%'; $s.Save()"
+powershell -command "$s=(New-Object -COM WScript.Shell).CreateShortcut('%SHORTCUT_PATH%'); $s.TargetPath='%TARGET_PATH%'; $s.Save()"
 
-:: Step 7: Run the application
+:: Step 8: Run the application
 echo Running the application...
-python main.py
+%TARGET_PATH%
 
 echo Setup completed successfully.
 pause
