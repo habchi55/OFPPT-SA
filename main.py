@@ -116,7 +116,7 @@ def show_login_window():
     login_window = tk.Toplevel()
     login_window.title("Se connecter")
 
-    left_logo_image = tk.PhotoImage(file=r'C:\Users\Nasser\Downloads\Logoofpptnobg.png')
+    left_logo_image = tk.PhotoImage(file=r'C:\Users\Nasser\Downloads\logoprogrammenobg.png')
     login_window.left_logo_image = left_logo_image
     login_window.iconphoto(False, left_logo_image)
 
@@ -139,7 +139,7 @@ def show_login_window():
 
     theme_combobox = ttk.Combobox(frame, values=["forest-dark", "forest-light"], state="readonly")
     theme_combobox.set("Sélectionner le thème")
-    theme_combobox.grid(row=6, column=1, pady=5, sticky="ew")
+    theme_combobox.grid(row=6, column=0, pady=5,padx=5, sticky="ew")
     theme_combobox.bind("<<ComboboxSelected>>", change_theme)
 
     frame.columnconfigure(1, weight=1)
@@ -654,7 +654,7 @@ def initialize_main_application():
     style = ttk.Style()
     style.configure("Treeview", font=("Arial", 9), rowheight=30)  # Set the font size and row height
 
-    treeview = ttk.Treeview(treeFrame, show="headings", columns=cols, height=15, selectmode="extended",
+    treeview = ttk.Treeview(treeFrame, show="headings", columns=cols, height=20, selectmode="extended",
                             style="Treeview")
     treeview.bind("<ButtonRelease-1>", show_detailed_information)
 
@@ -753,7 +753,7 @@ if __name__ == "__main__":
     root.withdraw()
     create_database()
 
-    logo_path = r'C:\Users\Nasser\Downloads\Logo_ofppt.png'
+    logo_path = r'C:\Users\Nasser\Downloads\logoprogramme.png'
     logo = PhotoImage(file=logo_path)
     root.logo = logo
 
