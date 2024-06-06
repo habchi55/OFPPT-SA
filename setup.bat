@@ -41,16 +41,17 @@ set SHORTCUT_NAME=OFPPT-SA
 :: Define paths
 set SHORTCUT_PATH="%USERPROFILE%\Desktop\%SHORTCUT_NAME%.lnk"
 set TARGET_PATH="%CD%\dist\OFPPT-SA.exe"
-set ICON_PATH="%CD%\assets\logoofpptnobg.ico"
+set ICON_PNG_PATH="%CD%\assets\logoprogrammenobg.png"
+set ICON_ICO_PATH="%CD%\assets\logoprogrammenobg.ico"
 
 :: Convert the PNG to ICO if needed (requires ImageMagick)
-if not exist "%ICON_PATH%" (
+if not exist "%ICON_ICO_PATH%" (
     echo Converting PNG to ICO...
-    convert "%CD%\assets\logoofpptnobg.png" "%ICON_PATH%"
+    magick convert "%ICON_PNG_PATH%" "%ICON_ICO_PATH%"
 )
 
 :: Create the shortcut using PowerShell
-powershell -command "$s=(New-Object -COM WScript.Shell).CreateShortcut('%SHORTCUT_PATH%'); $s.TargetPath='%TARGET_PATH%'; $s.IconLocation='%ICON_PATH%'; $s.Save()"
+powershell -command "$s=(New-Object -COM WScript.Shell).CreateShortcut('%SHORTCUT_PATH%'); $s.TargetPath='%TARGET_PATH%'; $s.IconLocation='%ICON_ICO_PATH%'; $s.Save()"
 
 :: Step 8: Run the application
 echo Running the application...
