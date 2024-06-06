@@ -30,17 +30,17 @@ python -c "from your_script import create_database; create_database()"
 
 :: Step 6: Build the executable using PyInstaller
 echo Building the executable...
-pyinstaller --onefile --name "OFPPT Suivi d'Actions" main.py
+pyinstaller --onefile --name "OFPPT-SA" main.py
 
 :: Step 7: Create a shortcut to run the executable
 echo Creating shortcut...
 
 :: Customize the name of the shortcut here
-set SHORTCUT_NAME=OFPPT Suivi d'Actions
+set SHORTCUT_NAME=OFPPT-SA
 
 :: Define paths
-set SHORTCUT_PATH=%USERPROFILE%\Desktop\%SHORTCUT_NAME%.lnk
-set TARGET_PATH=%CD%\dist\OFPPT Suivi d'Actions.exe
+set SHORTCUT_PATH="%USERPROFILE%\Desktop\%SHORTCUT_NAME%.lnk"
+set TARGET_PATH="%CD%\dist\OFPPT-SA.exe"
 
 :: Create the shortcut using PowerShell
 powershell -command "$s=(New-Object -COM WScript.Shell).CreateShortcut('%SHORTCUT_PATH%'); $s.TargetPath='%TARGET_PATH%'; $s.Save()"
