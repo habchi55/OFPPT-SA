@@ -30,7 +30,7 @@ python -c "from your_script import create_database; create_database()"
 
 :: Step 6: Build the executable using PyInstaller
 echo Building the executable...
-pyinstaller --onefile --name "OFPPT-SA" main.py
+pyinstaller --onefile --noconsole --name "OFPPT-SA" main.py
 
 :: Step 7: Create a shortcut to run the executable
 echo Creating shortcut...
