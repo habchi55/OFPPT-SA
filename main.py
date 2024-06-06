@@ -167,9 +167,8 @@ def create_account():
 
     create_window = tk.Toplevel()
     create_window.title("Créer un compte")
-    apply_theme(create_window)
 
-    left_logo_image = tk.PhotoImage(file=r'C:\Users\Nasser\Downloads\Logoofpptnobg.png')
+    left_logo_image = tk.PhotoImage(file=r'C:\Users\Nasser\Downloads\Logoprogrammenobg.png')
     create_window.left_logo_image = left_logo_image
     create_window.iconphoto(False, left_logo_image)
 
@@ -203,6 +202,7 @@ def create_account():
     tk.Button(frame, text="Soumettre", command=submit).grid(row=10, column=1, pady=5, sticky="ew")
 
     frame.columnconfigure(1, weight=1)
+
 
 def login():
     global current_user, email_button, selected_theme
@@ -240,7 +240,7 @@ def open_file_from_treeview(event):
             print(f"Erreur d'ouverture du fichier: {e}")
 
 def generate_email():
-    logo_image = tk.PhotoImage(file=r'C:\Users\Nasser\Downloads\Logoofpptnobg.png')
+    logo_image = tk.PhotoImage(file=r'C:\Users\Nasser\Downloads\Logoprogrammenobg.png')
 
     complex_name = custom_askstring("Nom du complexe", "Entrez le nom du complexe :", logo_image)
 
