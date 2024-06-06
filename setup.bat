@@ -40,14 +40,14 @@ set SHORTCUT_NAME=OFPPT Suivi d'Actions
 
 :: Define paths
 set SHORTCUT_PATH=%USERPROFILE%\Desktop\%SHORTCUT_NAME%.lnk
-set TARGET_PATH=%CD%\dist\%SHORTCUT_NAME%.exe
+set TARGET_PATH=%CD%\dist\OFPPT Suivi d'Actions.exe
 
 :: Create the shortcut using PowerShell
 powershell -command "$s=(New-Object -COM WScript.Shell).CreateShortcut('%SHORTCUT_PATH%'); $s.TargetPath='%TARGET_PATH%'; $s.Save()"
 
 :: Step 8: Run the application
 echo Running the application...
-%TARGET_PATH%
+"%TARGET_PATH%"
 
 echo Setup completed successfully.
 pause
