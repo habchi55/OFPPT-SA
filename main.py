@@ -749,7 +749,7 @@ def show_detailed_information(event):
 
 if __name__ == "__main__":
     root = tk.Tk()
-    root.title("Plan D'action OFPPT")
+    root.title("OFPPT Suivi d'Actions")
     root.withdraw()
     create_database()
 
