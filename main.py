@@ -30,7 +30,7 @@ def custom_askstring(title, prompt, logo_image):
     return dialog.result
 
 def create_database():
-    conn = sqlite3.connect('../users.db')
+    conn = sqlite3.connect('users.db')
     c = conn.cursor()
     c.execute('''
         CREATE TABLE IF NOT EXISTS users (
@@ -46,7 +46,7 @@ def create_database():
     conn.close()
 
 def add_user(name, post, email, password, department):
-    conn = sqlite3.connect('../users.db')
+    conn = sqlite3.connect('users.db')
     c = conn.cursor()
     try:
         c.execute('INSERT INTO users (name, post, email, password, department) VALUES (?, ?, ?, ?, ?)',
@@ -59,7 +59,7 @@ def add_user(name, post, email, password, department):
         conn.close()
 
 def validate_user(email, password):
-    conn = sqlite3.connect('../users.db')
+    conn = sqlite3.connect('users.db')
     c = conn.cursor()
     c.execute('SELECT * FROM users WHERE email=? AND password=?', (email, password))
     user = c.fetchone()
@@ -67,7 +67,7 @@ def validate_user(email, password):
     return user
 
 def get_user_details(user_id):
-    conn = sqlite3.connect('../users.db')
+    conn = sqlite3.connect('users.db')
     c = conn.cursor()
     c.execute('SELECT name, post, email FROM users WHERE id=?', (user_id,))
     user = c.fetchone()
@@ -105,18 +105,22 @@ def apply_theme(window, theme=None):
     light_theme_path = os.path.join(current_dir, "forest-light.tcl")
     dark_theme_path = os.path.join(current_dir, "forest-dark.tcl")
 
-    if "forest-light" not in style.theme_names():
-        window.tk.call("source", light_theme_path)
-    if "forest-dark" not in style.theme_names():
-        window.tk.call("source", dark_theme_path)
-    style.theme_use(theme)
+    try:
+        if "forest-light" not in style.theme_names():
+            window.tk.call("source", light_theme_path)
+        if "forest-dark" not in style.theme_names():
+            window.tk.call("source", dark_theme_path)
+        style.theme_use(theme)
+    except tk.TclError as e:
+        messagebox.showerror("Theme Error", f"An error occurred while applying the theme: {e}")
+
 
 def show_login_window():
     global email_entry, password_entry, login_window, theme_combobox
     login_window = tk.Toplevel()
     login_window.title("Se connecter")
 
-    left_logo_image = tk.PhotoImage(file=r'C:\Users\Nasser\Downloads\logoprogrammenobg.png')
+    left_logo_image = tk.PhotoImage(file=left_logo_path)
     login_window.left_logo_image = left_logo_image
     login_window.iconphoto(False, left_logo_image)
 
@@ -168,7 +172,7 @@ def create_account():
     create_window = tk.Toplevel()
     create_window.title("Créer un compte")
 
-    left_logo_image = tk.PhotoImage(file=r'C:\Users\Nasser\Downloads\Logoprogrammenobg.png')
+    left_logo_image = tk.PhotoImage(file=left_logo_path)
     create_window.left_logo_image = left_logo_image
     create_window.iconphoto(False, left_logo_image)
 
@@ -202,7 +206,6 @@ def create_account():
     tk.Button(frame, text="Soumettre", command=submit).grid(row=10, column=1, pady=5, sticky="ew")
 
     frame.columnconfigure(1, weight=1)
-
 
 def login():
     global current_user, email_button, selected_theme
@@ -240,7 +243,7 @@ def open_file_from_treeview(event):
             print(f"Erreur d'ouverture du fichier: {e}")
 
 def generate_email():
-    logo_image = tk.PhotoImage(file=r'C:\Users\Nasser\Downloads\Logoprogrammenobg.png')
+    logo_image = tk.PhotoImage(file=left_logo_path)
 
     complex_name = custom_askstring("Nom du complexe", "Entrez le nom du complexe :", logo_image)
 
@@ -285,7 +288,7 @@ def copy_to_clipboard(text):
 new_cols = ["CF", "EFP", "VOLET", "ACTION", "OBJET", "CFP/ EFP", "PRIORITÉ", "STATUT", "DEADLINE", "OBSERVATIONS", "RESSOURCES"]
 
 def load_data():
-    path = r"C:\Users\Nasser\Documents\test.xlsx"
+    path = os.path.join(current_dir, "data", "test.xlsx")
     workbook = openpyxl.load_workbook(path)
     sheet = workbook.active
 
@@ -314,7 +317,7 @@ cols = new_cols[3:]  # Only include columns starting from "ACTION"
 def delete_row():
     selected_items = treeview.selection()
     if selected_items:
-        path = r"C:\Users\Nasser\Documents\test.xlsx"
+        path = os.path.join(current_dir, "data", "test.xlsx")
         workbook = openpyxl.load_workbook(path)
         sheet = workbook.active
 
@@ -348,7 +351,7 @@ def insert_row():
 
     treeview.insert('', tk.END, values=row_values[3:])  # Insert values starting from the 4th column
 
-    path = r"C:\Users\Nasser\Documents\test.xlsx"
+    path = os.path.join(current_dir, "data", "test.xlsx")
     workbook = openpyxl.load_workbook(path)
     sheet = workbook.active
     sheet.append(row_values)
@@ -379,7 +382,7 @@ def show_user_management_window():
     user_tree.pack(fill='both', expand=True)
 
     def load_users():
-        conn = sqlite3.connect('../users.db')
+        conn = sqlite3.connect('users.db')
         c = conn.cursor()
         c.execute('SELECT id, name, post, email, department FROM users')
         users = c.fetchall()
@@ -440,7 +443,7 @@ def show_user_management_window():
     def delete_user():
         selected_item = user_tree.selection()[0]
         user_id = user_tree.item(selected_item, "values")[0]
-        conn = sqlite3.connect('../users.db')
+        conn = sqlite3.connect('users.db')
         c = conn.cursor()
         c.execute('DELETE FROM users WHERE id=?', (user_id,))
         conn.commit()
@@ -460,7 +463,7 @@ def show_user_management_window():
             department = department_combobox.get()
 
             if name and post and email and password and department:
-                conn = sqlite3.connect('../users.db')
+                conn = sqlite3.connect('users.db')
                 c = conn.cursor()
                 c.execute('UPDATE users SET name=?, post=?, email=?, password=?, department=? WHERE id=?',
                           (name, post, email, password, department, user[0]))
@@ -524,10 +527,10 @@ def initialize_main_application():
     imported_file_path = ""
 
     frame = ttk.Frame(root, style="Card")
-    frame.pack()
+    frame.pack(fill='both', expand=True)  # Ensure the frame fills the window and expands with resizing
 
     widgets_frame = ttk.LabelFrame(frame, text="Insertion")
-    widgets_frame.grid(row=0, column=0)
+    widgets_frame.grid(row=0, column=0, sticky="nsew")  # Use sticky to ensure it resizes correctly
 
     cf_options = ["CF AIN AOUDA TAMESNA", "CF HAY NAHDA RABAT", "CF HAY RIAD RABAT", "CF KHEMISSET",
                   "CF MAAMORA KENITRA", "CF SALE I", "CF SALE II", "CF SEBOU SAKNIA KENITRA", "CF SIDI KACEM",
@@ -638,7 +641,7 @@ def initialize_main_application():
     manage_db_button.grid(row=15, column=0, padx=5, pady=5, sticky="ew")
 
     treeFrame = ttk.Frame(frame)
-    treeFrame.grid(row=0, column=1, pady=10)
+    treeFrame.grid(row=0, column=1, pady=10, sticky="nsew")
 
     # Add vertical and horizontal scrollbars to the treeview
     treeScrollY = ttk.Scrollbar(treeFrame, orient="vertical")
@@ -685,6 +688,7 @@ def initialize_main_application():
         button.grid(row=0, column=i, padx=5, pady=5, sticky="ew")
 
     load_data()
+
 
 def open_text_editor(field_name, entry_widget):
     def save_text():
@@ -750,10 +754,15 @@ def show_detailed_information(event):
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("OFPPT Suivi d'Actions")
+    root.geometry("1920x1080")
     root.withdraw()
     create_database()
 
-    logo_path = r'C:\Users\Nasser\Downloads\logoprogramme.png'
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    logo_path = os.path.join(current_dir, 'assets', 'logoprogramme.png')
+    left_logo_path = os.path.join(current_dir, 'assets', 'logoprogrammenobg.png')
+
     logo = PhotoImage(file=logo_path)
     root.logo = logo
 
